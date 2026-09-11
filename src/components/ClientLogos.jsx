@@ -1,6 +1,8 @@
 import React from "react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+// Keep your COMPLETE organizations array with all SVG logos here.
+// It must be above ClientLogos().
 const organizations = [
   {
     name: "COLOR",
@@ -358,21 +360,8 @@ const organizations = [
 ];
 
 function ClientLogos() {
-  const scrollLogos = (direction) => {
-    const container = document.getElementById("organization-logos");
-
-    if (!container) {
-      return;
-    }
-
-    container.scrollBy({
-      left: direction === "next" ? 320 : -320,
-      behavior: "smooth",
-    });
-  };
-
   return (
-    <section className="bg-[#171514] text-[#f6f1eb]">
+    <section className="overflow-hidden bg-[#171514] text-[#f6f1eb]">
       <div className="mx-auto max-w-[1440px] px-6 py-14 sm:px-10 lg:px-16 lg:py-16 xl:px-20">
 
         {/* Heading */}
@@ -386,51 +375,50 @@ function ClientLogos() {
           <span className="h-px flex-1 bg-[#3b3633]" />
         </div>
 
-        {/* Logo viewport */}
-        <div className="relative mt-8">
+        {/* Marquee */}
+        <div className="relative mt-8 overflow-hidden">
 
-          {/* Left */}
-          <button
-            type="button"
-            onClick={() => scrollLogos("previous")}
-            aria-label="Scroll organizations left"
-            className="absolute left-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center border border-[#514843] bg-[#171514] text-[#f6f1eb] transition-all duration-300 hover:border-[#c7a58c] hover:text-[#c7a58c]"
-          >
-            <ArrowLeft
-              size={16}
-              strokeWidth={1.3}
-            />
-          </button>
+          {/* Left fade */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-[#171514] to-transparent sm:w-24" />
 
-          {/* Logos */}
-          <div
-            id="organization-logos"
-            className="mx-10 flex snap-x snap-mandatory items-center gap-8 overflow-x-auto px-4 py-5 scrollbar-none sm:gap-12 lg:mx-12 lg:justify-between lg:gap-8"
-          >
-            {organizations.map((organization) => (
-              <div
-                key={organization.name}
-                className="group flex h-20 min-w-[145px] shrink-0 snap-center items-center justify-center text-[#f6f1eb] opacity-65 transition-all duration-300 hover:opacity-100 sm:min-w-[165px]"
-              >
-                <div className="w-full max-w-[155px]">
-                  {organization.logo}
+          {/* Right fade */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-[#171514] to-transparent sm:w-24" />
+
+          {/* Moving track */}
+          <div className="flex w-max animate-logo-marquee">
+
+            {/* Set 1 */}
+            <div className="flex shrink-0 items-center gap-10 px-5 sm:gap-16 sm:px-8 lg:gap-20">
+              {organizations.map((organization) => (
+                <div
+                  key={`first-${organization.name}`}
+                  className="flex h-20 w-[145px] shrink-0 items-center justify-center text-[#f6f1eb] opacity-60 transition-opacity duration-300 hover:opacity-100 sm:w-[165px]"
+                >
+                  <div className="w-full max-w-[155px]">
+                    {organization.logo}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
 
-          {/* Right */}
-          <button
-            type="button"
-            onClick={() => scrollLogos("next")}
-            aria-label="Scroll organizations right"
-            className="absolute right-0 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center border border-[#514843] bg-[#171514] text-[#f6f1eb] transition-all duration-300 hover:border-[#c7a58c] hover:text-[#c7a58c]"
-          >
-            <ArrowRight
-              size={16}
-              strokeWidth={1.3}
-            />
-          </button>
+            {/* Set 2 */}
+            <div
+              className="flex shrink-0 items-center gap-10 px-5 sm:gap-16 sm:px-8 lg:gap-20"
+              aria-hidden="true"
+            >
+              {organizations.map((organization) => (
+                <div
+                  key={`second-${organization.name}`}
+                  className="flex h-20 w-[145px] shrink-0 items-center justify-center text-[#f6f1eb] opacity-60 transition-opacity duration-300 hover:opacity-100 sm:w-[165px]"
+                >
+                  <div className="w-full max-w-[155px]">
+                    {organization.logo}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+          </div>
         </div>
 
         {/* Bottom line */}
